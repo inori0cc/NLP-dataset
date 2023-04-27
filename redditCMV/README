@@ -1,0 +1,103 @@
+These datasets are distributed together with the following paper:
+
+Sentence-Level Content Planning and Style Specification for Neural Text Generation
+Xinyu Hua and Lu Wang
+Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP 2019)
+
+Suggested citation:
+@inproceedings{hua-wang-2019-sentence,
+    title = "Sentence-Level Content Planning and Style Specification for Neural Text Generation",
+    author = "Hua, Xinyu  and
+      Wang, Lu",
+    booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing",
+    month = oct # "-" # nov,
+    year = "2019",
+    address = "Hong Kong, China",
+    publisher = "Association for Computational Linguistics",
+}
+
+Dataset URL: http://xinyuhua.github.io/Resources/emnlp19/
+
+
+====== Content ======
+
+I. Description
+II. Data format
+III. Contact
+
+
+===== I. Description =====
+
+We release the following two datasets, together with a processed version of the 
+AGENDA dataset released by Koncel-Kedziorski et al, 2019[1]:
+
+- Argument generation dataset from reddit ChangeMyView
+- Wikipedia paragraph generation dataset
+
+The argument generation dataset is a modified version based on our ACL19' paper titled "Argument generation with retrieval, planning, and realization". The dataset consists of original reddit posts, paired with multiple high quality root reply paragraphs. We also include a list of retrieved passages from various news portals and the corresponding keyphrases extracted from them.
+
+The Wikipedia paragraph dataset contains the first paragraphs of Wikipedia article pages. In our work we align the normal Wikipedia articles with its simplified version. The keyphrases are extracted from both versions and the model is supposed to choose the appropriate ones given the specified style.
+
+The AGENDA dataset contains 40,720 scientific paper abstracts. SciE was run to obtain the entities and relations in this dataset. In our experiment, we only utilize the extracted entities.
+
+[1]: Rik Koncel-Kedziorski, Dhanush Bekal, Yi Luan, Mirella Lapata, and Hannaneh Hajishirzi. 2019. Text Generation from Knowledge Graphs with Graph Transformers. In Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics
+
+
+
+===== II. Data format =====
+
+For all datasets, the train/dev/test data are in jsonlist format, with `.jsonl` extension. We also include the vocabulary file used for each task as `vocab.txt`.
+
+- II.1 arggen/:
+
+    For `train.jsonl` and `dev.jsonl`, the following fields are available:
+
+        `id` (string): a unqiue thread id
+        `url` (string): the URL link to the thread page
+        `op` (list): tokenized original post including title and body
+        `target_counterarg` (list): a list of counter-argument sentences:
+            `style` (string): one of `claim`, `premise`, `functional`
+            `tokens` (list): tokenized sentence words
+            `selected_keyphrases` (list): the list of keyphrases that have content word overlap with the current sentence.
+        `target_retrieved_passages` (list): the list of retrieved passages:
+            `sentences` (list): the list of sentences, where each sentence is a list of tokens
+            `keyphrases` (list): the list of keyphrases in current passage
+
+
+    For `test.jsonl`, the following fields are available:
+
+        `id` (string): a unqiue thread id
+        `url` (string): the URL link to the thread page
+        `op` (list): tokenized original post including title and body
+        `op_retrieved_passages` (list): the list of retrieved passages:
+            `sentences` (list): the list of sentences, where each sentence is a list of tokens
+            `keyphrases` (list): the list of keyphrases in current passage
+
+
+
+- II.2 wikigen/:
+
+    For `train.jsonl`, `dev.jsonl`, `test.jsonl`, the following fields are available:
+
+        `title` (list): tokenized title
+        `normal_sents` (list): the list of sentences for normal Wikipedia paragraph, each sentence is a list of tokens
+        `simple_sents` (list): the list of sentences for simple Wikipedia paragraph, each sentence is a list of tokens
+        `ph_bank` (list): the list of keyphrase candidates, each keyphrase is a list of tokens
+        `normal_ph_sel` (list): the list of selected keyphrase per sentence for normal Wikipedia
+        `simple_ph_sel` (list): the list of selected keyphrase per sentence for simple Wikipedia
+
+
+- II.3 absgen/:
+    
+    For `train.jsonl`, `dev.jsonl`, `test.jsonl`, the following fields are available:
+
+        `title` (list): tokenized title
+        `abstract_words` (list): the list of sentences in abstract, each sentence is a list of tokens
+        `ph_bank` (list): the list of keyphrase candidates, each keyphrase is a list of tokens
+        `ph_sel` (list): the list of selected keyphrase for each sentence
+
+
+===== III. Contact =====
+
+Should you have any questions, please contact hua.x@husky.neu.edu (Xinyu Hua)
+
